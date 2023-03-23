@@ -2,14 +2,42 @@ const holes = document.querySelectorAll('.hole');
 const moles = document.querySelectorAll('.mole');
 const startButton = document.querySelector('#start');
 // TODO: Add the missing query selectors:
-const score; // Use querySelector() to get the score element
-const timerDisplay; // use querySelector() to get the timer element.
+const score = document.querySelector('#score'); // Use querySelector() to get the score element
+const timerDisplay = document.querySelector('#timer'); // use querySelector() to get the timer element.
+const LastScore = document.querySelector('#Lscore');
+const HighScore = document.querySelector('#Hscore');
+const easyBtn = document.querySelector('#easy');
+const normalBtn = document.querySelector('#normal');
+const hardBtn = document.querySelector('#hard')
 
-let time = 0;
+
+let time = 30;
 let timer;
 let lastHole = 0;
 let points = 0;
 let difficulty = "hard";
+let gameStopped = stopGame();
+let lastClicked;
+
+function chooseEasy(event){
+  difficulty = "easy";
+  easyBtn.classList.add("highlight");
+  normalBtn.classList.remove("highlight");
+  hardBtn.classList.remove("highlight");
+}
+function chooseNormal(event){
+  difficulty = "normal";
+  normalBtn.classList.add("highlight");
+  easyBtn.classList.remove("highlight");
+  hardBtn.classList.remove("highlight");
+}
+function chooseHard(event){
+  difficulty = "hard";
+  hardBtn.classList.add("highlight");
+  normalBtn.classList.remove("highlight");
+  easyBtn.classList.remove("highlight");
+}
+
 
 /**
  * Generates a random integer within a range.
@@ -21,7 +49,7 @@ let difficulty = "hard";
  *
  */
 function randomInteger(min, max) {
-  // return Math.floor(Math.random() * (max - min + 1)) + min;
+   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /**
@@ -39,9 +67,19 @@ function randomInteger(min, max) {
  * setDelay("hard") //> returns 856 (returns a random number between 600 and 1200).
  *
  */
+
+//how to test & if else encapsulating hard is ok or is there a chance the setting isnt easy/normal/ or hard
 function setDelay(difficulty) {
-  // TODO: Write your code here.
-  
+// TODO: Write your code here.
+  let delay = 0;
+  if(difficulty === 'easy') {
+    delay = 1500;
+  } else if(difficulty === 'normal') {
+    delay = 1000;
+  } else{
+    delay = randomInteger(600,1200);
+  }
+  return delay
 }
 
 /**
@@ -58,9 +96,17 @@ function setDelay(difficulty) {
  * const holes = document.querySelectorAll('.hole');
  * chooseHole(holes) //> returns one of the 9 holes that you defined
  */
+
+//how to test
 function chooseHole(holes) {
   // TODO: Write your code here.
-
+  const index = randomInteger(0,8);
+  const hole = holes[index]
+  if(lastHole === hole){
+    return chooseHole(holes)
+  }
+  lastHole = hole;
+  return hole;
 }
 
 /**
@@ -83,9 +129,20 @@ function chooseHole(holes) {
 *  //   return gameStopped
 *
 */
+//the if function should continuly return show up every iteration until gameStopped??
+//something is wrong here with gameStopped
 function gameOver() {
   // TODO: Write your code here
+  if(time > 0) {
+    timeoutID = showUp()
+    return timeoutID
+  } 
+  else {
+     //return gameStopped
+      return stopGame()
+  }
   
+  //return stopGame()
 }
 
 /**
@@ -97,9 +154,11 @@ function gameOver() {
 * to call `showAndHide(hole, delay)`.
 *
 */
+
+//do i need to put anything in setDelay & chooseHole parameters
 function showUp() {
-  let delay = 0; // TODO: Update so that it uses setDelay()
-  const hole = 0;  // TODO: Update so that it use chooseHole()
+  let delay = setDelay(difficulty); // TODO: Update so that it uses setDelay()
+  const hole = chooseHole(holes);  // TODO: Update so that it use chooseHole()
   return showAndHide(hole, delay);
 }
 
@@ -111,14 +170,16 @@ function showUp() {
 * the timeoutID
 *
 */
+
 function showAndHide(hole, delay){
   // TODO: call the toggleVisibility function so that it adds the 'show' class.
-  
+  toggleVisibility(hole);
+
   const timeoutID = setTimeout(() => {
     // TODO: call the toggleVisibility function so that it removes the 'show' class when the timer times out.
-    
+    toggleVisibility(hole)
     gameOver();
-  }, 0); // TODO: change the setTimeout delay to the one provided as a parameter
+  }, delay); // TODO: change the setTimeout delay to the one provided as a parameter
   return timeoutID;
 }
 
@@ -128,9 +189,12 @@ function showAndHide(hole, delay){
 * a given hole. It returns the hole.
 *
 */
+
+////i think im calling the wrong css class here vvv no css class called show 
 function toggleVisibility(hole){
   // TODO: add hole.classList.toggle so that it adds or removes the 'show' class.
-  
+
+ hole.classList.toggle("show")
   return hole;
 }
 
@@ -146,10 +210,16 @@ function toggleVisibility(hole){
 */
 function updateScore() {
   // TODO: Write your code here
-
+  points = points + 1;
+  score.textContent = points;
   return points;
 }
 
+function bestScore(){
+  if(points > HighScore.textContent){
+    HighScore.textContent = points;
+  }
+}
 /**
 *
 * This function clears the score by setting `points = 0`. It also updates
@@ -159,8 +229,8 @@ function updateScore() {
 */
 function clearScore() {
   // TODO: Write your code here
-  // points = 0;
-  // score.textContent = points;
+   points = 0;
+   score.textContent = points;
   return points;
 }
 
@@ -172,7 +242,10 @@ function clearScore() {
 function updateTimer() {
   // TODO: Write your code here.
   // hint: this code is provided to you in the instructions.
-  
+  if (time >= 0){
+    time -= 1;
+    timerDisplay.textContent = time;
+  }
   return time;
 }
 
@@ -184,9 +257,10 @@ function updateTimer() {
 */
 function startTimer() {
   // TODO: Write your code here
-  // timer = setInterval(updateTimer, 1000);
+   timer = setInterval(updateTimer, 1000);
   return timer;
 }
+
 
 /**
 *
@@ -198,8 +272,12 @@ function startTimer() {
 */
 function whack(event) {
   // TODO: Write your code here.
-  // call updateScore()
-  return points;
+  if(lastClicked != event.target.id){
+    lastClicked = event.target.id
+    console.log(event.target.id,lastHole)
+   updateScore()
+    return points;
+  }
 }
 
 /**
@@ -207,12 +285,28 @@ function whack(event) {
 * Adds the 'click' event listeners to the moles. See the instructions
 * for an example on how to set event listeners using a for loop.
 */
+//walk through this one, when i call whack do i need to add parathesis "whack()"
+//got it i had to call setEventListeners()
 function setEventListeners(){
   // TODO: Write your code here
-
+  /*
+  moles.forEach((mole) =>{
+    mole.addEventListener("click", whack)
+  })
+*/
+moles.forEach((mole) =>{
+  mole.addEventListener("click", whack)
+});
   return moles;
 }
-
+function setDifficulty(){
+easyBtn.addEventListener("click",chooseEasy);
+normalBtn.addEventListener("click", chooseNormal);
+hardBtn.addEventListener("click",chooseHard)
+return difficulty
+}
+setDifficulty();
+ 
 /**
 *
 * This function sets the duration of the game. The time limit, in seconds,
@@ -233,6 +327,13 @@ function setDuration(duration) {
 function stopGame(){
   // stopAudio(song);  //optional
   clearInterval(timer);
+  LastScore.textContent = points;
+  bestScore();
+  startButton.disabled = false;
+  easyBtn.disabled = false;
+  normalBtn.disabled = false;
+  hardBtn.disabled = false;
+ // console.log("stop")
   return "game stopped";
 }
 
@@ -243,8 +344,16 @@ function stopGame(){
 *
 */
 function startGame(){
-  //setDuration(10);
-  //showUp();
+  setDuration(30);
+  clearScore()
+  showUp();
+  startTimer();
+  setEventListeners();
+  startButton.disabled = true;
+  easyBtn.disabled = true;
+  normalBtn.disabled = true;
+  hardBtn.disabled = true;
+//  console.log("start")
   return "game started";
 }
 

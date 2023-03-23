@@ -7,7 +7,7 @@ html {
   -o-background-size: cover;
   background-size: cover;
   z-index:0;
-  overflow: hidden;
+  
 }
 
 h1 {
@@ -40,7 +40,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
-  /*cursor: url('./assets/mallet.png'), pointer;*/
+  cursor: url('../assets/mallet.png'), pointer;
 }
 
 .hole {
@@ -61,6 +61,7 @@ h2 {
   bottom: -40%;
   z-index: 2;
   pointer-events:none;
+  padding-bottom: 10px;
 }
 
 .mole {
@@ -79,4 +80,11 @@ h2 {
 .hole.show .mole {
   top: 0;
   /*transform: scale(1.1);*/
+}
+.group{
+  display: flex;
+  justify-content: space-evenly;
+}
+.highlight{
+  background-color: yellow;
 }

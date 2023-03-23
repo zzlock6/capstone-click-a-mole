@@ -3,16 +3,29 @@
     <link rel="stylesheet" href="./src/styles.css">
   </head>
   <body>
-    <h1></h1>
+    <h1 id="title">Click The Mole</h1>
     <div>
-      <div>
-        <h2>Click start to play!</h2>
+      <div class="group">
+        <div>
+          <h2>Click <button id="start">Start</button> to play!</h2>
+        </div>
+        <div>
+          <h2>Choose difficulty <button id ="easy">Easy</button><button id="normal">Normal</button><button id="hard">Hard</button></h2>
+        </div>
+      </div>
+      <div class = "group">
+        <div>
+          <h2>High Score: <span id = "Hscore">0</span></h2>
+        </div>
+        <div>
+          <h2>Score: <span id="score">0</span></h2>
+        </div>
+        <div>
+          <h2>Last Game: <span id="Lscore">0</span> </h2>
+        </div>
       </div>
       <div>
-        <h2>score: <span id="score">0</span></h2>
-      </div>
-      <div>
-          <h2><span id="timer">0</span> seconds left.</h2>
+          <h2><span id="timer">30</span> seconds left.</h2>
       </div>
     </div>
     <div class="grid">
@@ -21,6 +34,27 @@
       </div>
       <div id="hole1" class="hole">
         <div id="mole1" class="mole"></div>
+      </div>
+      <div id="hole2" class="hole">
+        <div id="mole2" class="mole"></div>
+      </div>
+      <div id="hole3" class="hole">
+        <div id="mole3" class="mole"></div>
+      </div>
+      <div id="hole4" class="hole">
+        <div id="mole4" class="mole"></div>
+      </div>
+      <div id="hole5" class="hole">
+        <div id="mole5" class="mole"></div>
+      </div>
+      <div id="hole6" class="hole">
+        <div id="mole6" class="mole"></div>
+      </div>
+      <div id="hole7" class="hole">
+        <div id="mole7" class="mole"></div>
+      </div>
+      <div id="hole8" class="hole">
+        <div id="mole8" class="mole"></div>
       </div>
       <!--TODO: Add the missing holes and moles. -->
     </div>
